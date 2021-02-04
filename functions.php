@@ -4,6 +4,8 @@ function init_template()
 {
     add_theme_support('post-thumbnails');
     add_theme_support('title-tag');
+
+    register_nav_menus($locations=['top_menu' => 'Main menu']);
 }
 
 function assets()
