@@ -67,7 +67,38 @@ function sidebar()
     );
 }
 
+function products_type()
+{
+    register_post_type(
+        $post_type='product',
+        $args=[
+            'label' => 'Products',
+            'description' => 'Platzi products',
+            'labels' => [
+                'name' => 'Products',
+                'singular_name' => 'Product',
+                'menu_name' => 'Products'
+            ],
+            'supports' => [
+                'title',
+                'editor',
+                'thumbnail',
+                'revisions'
+            ],
+            'public' => true,
+            'show_in_menu' => true,
+            'menu_position' => 5,
+            'menu_icon' => 'dashicons-cart',
+            'can_export' => true,
+            'publicly_queryable' => true,
+            'rewrite' => true,
+            'show_in_rest' => true,
+        ]
+    );
+}
+
 // Hooks
 add_action('after_setup_theme', 'init_template');
 add_action('wp_enqueue_scripts', 'assets');
 add_action('widgets_init', 'sidebar');
+add_action('init', 'products_type');
