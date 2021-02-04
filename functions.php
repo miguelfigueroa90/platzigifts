@@ -8,7 +8,7 @@ function init_template()
 
 function assets()
 {
-    // Adding CSS Bootstrap and Montserrat font to the theme.
+    // Registering Bootstrap and Montserrat font styles.
     wp_register_style(
         $handle='bootstrap',
         $src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css',
@@ -26,11 +26,27 @@ function assets()
 
     // Adding style to Style's queue.
     wp_enqueue_style(
-        $handle='estilos',
+        $handle='custom_styles',
         $src=get_stylesheet_uri(),
         $deps=['bootstrap', 'montserrat'],
         $ver='1.0',
         $media='all'
+    );
+
+    // Adding script to script's queue.
+    wp_enqueue_script(
+        $handle='bootstrap',
+        $src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js',
+        $deps=['jquery'],
+        $ver='4.5.3',
+        $in_footer=true
+    );
+    wp_enqueue_script(
+        $handle='custom',
+        $src=get_template_directory_uri() . '/assets/js/custom.js',
+        $deps='',
+        $ver='1.0',
+        $in_footer=true
     );
 }
 
