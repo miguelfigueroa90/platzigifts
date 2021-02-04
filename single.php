@@ -13,6 +13,7 @@
                     <?php the_content() ?>
                 </div>
             </div>
+            <?php get_template_part($slug = 'template-parts/post', $name = 'navigation') ?>
         <?php endwhile ?>
     <?php endif ?>
 </main>
