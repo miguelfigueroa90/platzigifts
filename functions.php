@@ -54,8 +54,20 @@ function assets()
 
 function sidebar()
 {
+    register_sidebar(
+        $args = [
+            'name' => 'Footer',
+            'id' => 'footer',
+            'description' => 'Footer\'s widget zone.',
+            'before_tile' => '<p>',
+            'after_tile' => '</p>',
+            'before_widget' => '<div id="%1$s" class="%2$s">',
+            'after_widget' => '</div>',
+        ]
+    );
 }
 
 // Hooks
 add_action('after_setup_theme', 'init_template');
 add_action('wp_enqueue_scripts', 'assets');
+add_action('widgets_init', 'sidebar');
