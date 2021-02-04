@@ -70,8 +70,8 @@ function sidebar()
 function products_type()
 {
     register_post_type(
-        $post_type='product',
-        $args=[
+        $post_type = 'product',
+        $args = [
             'label' => 'Products',
             'description' => 'Platzi products',
             'labels' => [
