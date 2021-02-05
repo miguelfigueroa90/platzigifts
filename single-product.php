@@ -6,11 +6,16 @@
             <?php the_post() ?>
             <?php $taxonomies = get_the_terms($post = get_the_ID(), $taxonomy = 'products-category') ?>
             <h1 class="my-3"><?= the_title() ?></h1>
-            <div class="row my-3">
-                <div class="col-6">
+            <div class="row my-5">
+                <div class="col-md-6 col-12">
                     <?php the_post_thumbnail() ?>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6 col-12">
+                    <?= do_shortcode($content = '[contact-form-7 id="52" title="Contact"]') ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
                     <?php the_content() ?>
                 </div>
             </div>
