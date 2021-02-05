@@ -10,7 +10,7 @@
                 <?php the_post() ?>
                 <div class="col-4 text-center-single-archive">
                     <a href="<?= the_permalink() ?>">
-                        <?php the_post_thumbnail() ?>
+                        <?php the_post_thumbnail('post-thumbnail', ['class' => 'img-responsive img-thumbnail']) ?>
                         <h4><?php the_title() ?></h4>
                     </a>
                 </div>
