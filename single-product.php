@@ -4,6 +4,7 @@
     <?php if (have_posts()) : ?>
         <?php while (have_posts()) : ?>
             <?php the_post() ?>
+            <?php $taxonomies = get_the_terms($post = get_the_ID(), $taxonomy = 'products-category') ?>
             <h1 class="my-3"><?= the_title() ?></h1>
             <div class="row my-3">
                 <div class="col-6">
@@ -21,6 +22,13 @@
                     'order' => 'ASC',
                     'order_by' => 'title',
                     'post__not_in' => [get_the_ID()],
+                    'tax_query' => [
+                        [
+                            'taxonomy' => 'products-category',
+                            'field' => 'slug',
+                            'terms' => $taxonomies[0]->slug,
+                        ],
+                    ],
                 ]
             )
             ?>

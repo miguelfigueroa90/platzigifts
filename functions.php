@@ -97,8 +97,29 @@ function products_type()
     );
 }
 
+function products_category_taxonomy()
+{
+    register_taxonomy(
+        $taxonomy = 'products-category',
+        $object_type = 'product',
+        $args = [
+            'hierarchical' => true,
+            'labels' => [
+                'name' => 'Products categories',
+                'singular_name' => 'Products category',
+            ],
+            'show_in_nav_menu' => true,
+            'show_admin_column' => true,
+            'rewrite' => [
+                'slug' => 'products-category',
+            ],
+        ]
+    );
+}
+
 // Hooks
 add_action('after_setup_theme', 'init_template');
 add_action('wp_enqueue_scripts', 'assets');
 add_action('widgets_init', 'sidebar');
 add_action('init', 'products_type');
+add_action('init', 'products_category_taxonomy');
