@@ -13,6 +13,35 @@
                     <?php the_content() ?>
                 </div>
             </div>
+            <?php
+            $products = new WP_Query(
+                $args = [
+                    'post_type' => 'product',
+                    'post_per_page' => 6,
+                    'order' => 'ASC',
+                    'order_by' => 'title',
+                    'post__not_in' => [get_the_ID()],
+                ]
+            )
+            ?>
+            <?php if ($products->have_posts()) : ?>
+                <div class="row jutify-content-related-products">
+                    <div class="col-12 text-center">
+                        <h3>Related products</h3>
+                    </div>
+                    <?php while ($products->have_posts()) : ?>
+                        <?php $products->the_post() ?>
+                        <div class="col-2 my-3 text-center">
+                            <?php the_post_thumbnail('post-thumbnail', ['class' => 'img-responsive img-thumbnail']) ?>
+                            <h4>
+                                <a href="<?= the_permalink() ?>">
+                                    <?= the_title() ?>
+                                </a>
+                            </h4>
+                        </div>
+                    <?php endwhile ?>
+                </div>
+            <?php endif ?>
         <?php endwhile ?>
     <?php endif ?>
 </main>
