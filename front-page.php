@@ -11,7 +11,18 @@
 
     <div class="products-list my-5">
         <h2 class="text-center">Products</h2>
-        <div class="row">
+        <div class="row my-3">
+            <div class="col-12">
+                <select name="products-categories" id="products-categories" class="form-control">
+                    <option value="">All Categories</option>
+                    <?php $terms = get_terms('products-category', ['hide_empty' => true]); ?>
+                    <?php foreach ($terms as $term) : ?>
+                        <option value="<?= $term->slug ?>"><?= $term->name ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+        <div id="products-result" class="row justify-content">
             <?php
             $products = new WP_Query(
                 $args = [
@@ -27,7 +38,7 @@
                     <?php $products->the_post() ?>
                     <div class="col-4">
                         <figure>
-                            <?php the_post_thumbnail() ?>
+                            <?php the_post_thumbnail('post-thumbnail', ['class' => 'img-responsive img-thumbnail']) ?>
                         </figure>
                         <h4 class="my-3 text-center">
                             <a href="<?= the_permalink() ?>">

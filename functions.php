@@ -50,6 +50,14 @@ function assets()
         $ver = '1.0',
         $in_footer = true
     );
+
+    wp_localize_script(
+        $handle = 'custom',
+        $object_name = 'pg',
+        $l10n = [
+            'ajaxurl' => admin_url($path = 'admin-ajax.php'),
+        ]
+    );
 }
 
 function sidebar()
@@ -117,9 +125,49 @@ function products_category_taxonomy()
     );
 }
 
+function pg_products_filter()
+{
+    $args = [
+        'post_type' => 'product',
+        'post_per_page' => -1,
+        'order' => 'ASC',
+        'order_by' => 'title',
+    ];
+
+    if ($_POST['category']) {
+        $args['tax_query'] = [
+            [
+                'taxonomy' => 'products-category',
+                'field' => 'slug',
+                'terms' => $_POST['category'],
+            ],
+        ];
+    }
+
+    $products = new WP_Query($args);
+
+    if ($products->have_posts()) {
+        $data = [];
+
+        while ($products->have_posts()) {
+            $products->the_post();
+
+            $data[] = [
+                'image' => get_the_post_thumbnail($post = get_the_ID(), $size = 'post-large'),
+                'link' => get_the_permalink(),
+                'title' => get_the_title(),
+            ];
+        }
+
+        wp_send_json($data);
+    }
+}
+
 // Hooks
 add_action('after_setup_theme', 'init_template');
 add_action('wp_enqueue_scripts', 'assets');
 add_action('widgets_init', 'sidebar');
 add_action('init', 'products_type');
 add_action('init', 'products_category_taxonomy');
+add_action('wp_ajax_pg_products_filter', 'pg_products_filter');
+add_action('wp_ajax_nopriv_pg_products_filter', 'pg_products_filter');
