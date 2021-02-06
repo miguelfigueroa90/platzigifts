@@ -50,6 +50,15 @@
             <?php endif ?>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h1>News</h1>
+        </div>
+        <div class="row" id="posts-result">
+
+        </div>
+    </div>
 </main>
 
 <?php get_footer(); ?>

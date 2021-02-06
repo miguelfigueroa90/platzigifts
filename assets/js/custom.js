@@ -29,4 +29,31 @@
             }
         });
     });
+
+    $(document).ready(function () {
+        $.ajax({
+            url: pg.apiurl + 'posts/3',
+            method: 'GET',
+            beforeSend: function () {
+                $('#posts-result').html('Cargando...')
+            },
+            success: function (data) {
+                let html = '';
+
+                data.forEach(element => {
+                    html += `<div class="col-4 my-3">
+                        <figure>${element.image}</figure>
+                        <h4 class="text-center my-2">
+                            <a href="${element.link}">${element.title}</a>
+                        </h4>
+                    </div>`
+                });
+
+                $('#posts-result').html(html);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
 })(jQuery);

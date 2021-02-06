@@ -56,6 +56,7 @@ function assets()
         $object_name = 'pg',
         $l10n = [
             'ajaxurl' => admin_url($path = 'admin-ajax.php'),
+            'apiurl' => home_url($path = 'wp-json/pg/v1/')
         ]
     );
 }
@@ -153,13 +154,54 @@ function pg_products_filter()
             $products->the_post();
 
             $data[] = [
-                'image' => get_the_post_thumbnail($post = get_the_ID(), $size = 'post-large'),
+                'image' => get_the_post_thumbnail($post = get_the_ID(), $size = 'post-large', $attr = ['class' => 'img-responsive img-thumbnail']),
                 'link' => get_the_permalink(),
                 'title' => get_the_title(),
             ];
         }
 
         wp_send_json($data);
+    }
+}
+
+function posts_api()
+{
+    register_rest_route(
+        $namespace = 'pg/v1',
+        $route = '/posts/(?P<quantity>\d+)',
+        $args = [
+            'methods' => 'GET',
+            'callback' => 'posts_api_request',
+        ],
+        $override = false
+    );
+}
+
+function posts_api_request($params)
+{
+    $args = [
+        'post_type' => 'post',
+        'post_per_page' => $params['quantity'],
+        'order' => 'ASC',
+        'order_by' => 'title',
+    ];
+
+    $posts = new WP_Query($args);
+
+    if ($posts->have_posts()) {
+        $data = [];
+
+        while ($posts->have_posts()) {
+            $posts->the_post();
+
+            $data[] = [
+                'image' => get_the_post_thumbnail($post = get_the_ID(), $size = 'post-large', $attr = ['class' => 'img-responsive img-thumbnail']),
+                'link' => get_the_permalink(),
+                'title' => get_the_title(),
+            ];
+        }
+
+        return $data;
     }
 }
 
@@ -171,3 +213,4 @@ add_action('init', 'products_type');
 add_action('init', 'products_category_taxonomy');
 add_action('wp_ajax_pg_products_filter', 'pg_products_filter');
 add_action('wp_ajax_nopriv_pg_products_filter', 'pg_products_filter');
+add_action('rest_api_init', 'posts_api');
