@@ -205,6 +205,24 @@ function posts_api_request($params)
     }
 }
 
+function pg_register_block()
+{
+    $assets = include_once get_template_directory() . '/blocks/build/index.asset.php';
+
+    wp_register_script(
+        $handle = 'pg-block',
+        $src = get_template_directory_uri() . '/blocks/build/index.js',
+        $deps = $assets['dependencies'],
+        $ver = $assets['version'],
+        $in_footer = true
+    );
+
+    register_block_type(
+        $name = 'pg/basic',
+        $args = ['editor_script' => 'pg-block']
+    );
+}
+
 // Hooks
 add_action('after_setup_theme', 'init_template');
 add_action('wp_enqueue_scripts', 'assets');
@@ -214,3 +232,4 @@ add_action('init', 'products_category_taxonomy');
 add_action('wp_ajax_pg_products_filter', 'pg_products_filter');
 add_action('wp_ajax_nopriv_pg_products_filter', 'pg_products_filter');
 add_action('rest_api_init', 'posts_api');
+add_action('init', 'pg_register_block');
