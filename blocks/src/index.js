@@ -25,6 +25,6 @@ registerBlockType(
                 value={content}
                 onChange={handlerOnChangeInput} />
         },
-        save: (props) => <h2>{props.attributes.content}</h2>
+        save: () => null
     }
 )

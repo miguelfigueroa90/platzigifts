@@ -219,8 +219,16 @@ function pg_register_block()
 
     register_block_type(
         $name = 'pg/basic',
-        $args = ['editor_script' => 'pg-block']
+        $args = [
+            'editor_script' => 'pg-block',
+            'render_callback' => 'pg_render_dynamic_block',
+        ]
     );
+}
+
+function pg_render_dynamic_block($attributes, $content)
+{
+    return "<h2>$attributes</h2>";
 }
 
 // Hooks

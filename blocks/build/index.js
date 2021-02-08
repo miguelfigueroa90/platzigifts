@@ -133,8 +133,8 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('pg/
       onChange: handlerOnChangeInput
     });
   },
-  save: function save(props) {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", null, props.attributes.content);
+  save: function save() {
+    return null;
   }
 });
 
