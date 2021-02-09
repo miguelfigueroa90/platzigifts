@@ -207,28 +207,34 @@ function posts_api_request($params)
 
 function pg_register_block()
 {
+    // Tomamos el archivo PHP generado en el Build
     $assets = include_once get_template_directory() . '/blocks/build/index.asset.php';
 
     wp_register_script(
-        $handle = 'pg-block',
-        $src = get_template_directory_uri() . '/blocks/build/index.js',
-        $deps = $assets['dependencies'],
-        $ver = $assets['version'],
-        $in_footer = true
+        'pg-block', // Handle del Script
+        get_template_directory_uri() . '/blocks/build/index.js', // Usamos get_template_directory_uri() para recibir la URL del directorio y no el Path
+        $assets['dependencies'], // Array de dependencias generado en el Build
+        $assets['version'] // Cada Build cambia la versión para no tener conflictos de caché
     );
 
     register_block_type(
-        $name = 'pg/basic',
-        $args = [
-            'editor_script' => 'pg-block',
-            'render_callback' => 'pg_render_dynamic_block',
-        ]
+        'pg/basic', // Nombre del bloque
+        array(
+            'editor_script' => 'pg-block', // Handler del Script que registramos arriba
+            'attributes'      => array( // Repetimos los atributos del bloque, pero cambiamos los objetos por arrays
+                'content' => array(
+                    'type'    => 'string',
+                    'default' => 'Hello world'
+                )
+            ),
+            'render_callback' => 'pg_render_dynamic_block' // Función de callback para generar el SSR (Server Side Render)
+        )
     );
 }
 
 function pg_render_dynamic_block($attributes, $content)
 {
-    return "<h2>$attributes</h2>";
+    return "<h2>{$attributes['content']}</h2>";
 }
 
 // Hooks
